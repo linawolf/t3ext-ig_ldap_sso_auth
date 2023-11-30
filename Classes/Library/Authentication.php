@@ -768,8 +768,13 @@ class Authentication
                     $hookParameters = [];
 
                     foreach ($parameters as $parameter) {
-                        list($parameterKey, $parameterValue) = explode('|', $parameter, 2);
-                        $hookParameters[trim($parameterKey)] = $parameterValue;
+                        $exploded = explode('|', $parameter, 2);
+                        if (count($exploded) > 1) {
+                            list($parameterKey, $parameterValue) = explode('|', $parameter, 2);
+                            $hookParameters[trim($parameterKey)] = $parameterValue;
+                        } else {
+                            $hookParameters[$parameter] = $parameter;
+                        }
                     }
                     if (empty($hookParameters['hookName'])) {
                         throw new \UnexpectedValueException(sprintf('Custom marker hook parameter "hookName" is undefined: %s', $matches[0]), 1430138379);
